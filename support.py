@@ -35,10 +35,10 @@ async def reply_to_user(client: Client, message: Message):
     """
     When an admin replies to a forwarded message in the group, forward the response to the user.
     """
-   user_message_map[forwarded_message.id] = user.id
+    user_message_map[forwarded_message.id] = user.id
 
-if message.reply_to_message and message.reply_to_message.id in user_message_map:
-    user_id = user_message_map[message.reply_to_message.id]
+ if message.reply_to_message and message.reply_to_message.id in user_message_map:
+     user_id = user_message_map[message.reply_to_message.id]
         
         # Forward text or media back to the user
         if message.text:
