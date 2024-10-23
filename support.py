@@ -40,7 +40,7 @@ async def reply_to_user(client: Client, message: Message):
        user_id = user_message_map[message.reply_to_message.id]
     if message.text:
         await client.send_message(chat_id=user_id, text=message.text)
-     elif message.media:
+    elif message.media:
         await message.copy(chat_id=user_id)
 
     await message.reply_text("Reply sent to the user.")
