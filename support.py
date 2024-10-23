@@ -1,6 +1,6 @@
 from pyrogram import Client, filters
 from pyrogram.types import Message
-
+import asyncio
 # Replace with your API credentials
 API_ID = "7980140"
 API_HASH = "db84e318c6894f560a4087c20c33ce0a"
@@ -15,7 +15,16 @@ app = Client("support_bot", api_id=API_ID, api_hash=API_HASH, bot_token=BOT_TOKE
 
 user_message_map = {}
 
-@app.on_message(filters.private & filters.text | filters.media)
+@app.on_message(filters.command("start") & filters.private)
+async def start_message(client: Client, message: Message):
+    """
+    Sends a welcome message when the user starts the bot.
+    """
+    await message.reply_text(
+        "Hello! Welcome to our support bot. Please send your questions or concerns, and we will forward them to the moderators."
+    )
+
+@app.on_message(filters.private & (filters.text | filters.media))
 async def forward_to_support_group(client: Client, message: Message):
     """
     When a user sends a message (text/media), forward it to the support group.
@@ -26,6 +35,13 @@ async def forward_to_support_group(client: Client, message: Message):
     # Store the user and their message ID to map it with the admin's response
     user_message_map[forwarded_message.id] = user.id
     
+    # Inform the user that their message is being sent to moderators
+    await asyncio.sleep(5)  # Wait for 5 seconds (or change to 10 if needed)
+    await message.reply_text(
+        "Your message has been sent to the moderators. Please wait for their response."
+    )
+
+    # Send a message to the support group
     await forwarded_message.reply_text(
         f"User @{user.username} sent a message. Reply here to respond."
     )
