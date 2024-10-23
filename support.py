@@ -38,14 +38,12 @@ async def reply_to_user(client: Client, message: Message):
     user_message_map[forwarded_message.id] = user.id
     if message.reply_to_message and message.reply_to_message.id in user_message_map:
        user_id = user_message_map[message.reply_to_message.id]
-        
-        # Forward text or media back to the user
-        if message.text:
-            await client.send_message(chat_id=user_id, text=message.text)
-        elif message.media:
-            await message.copy(chat_id=user_id)
+    if message.text:
+        await client.send_message(chat_id=user_id, text=message.text)
+     elif message.media:
+        await message.copy(chat_id=user_id)
 
-        await message.reply_text("Reply sent to the user.")
+    await message.reply_text("Reply sent to the user.")
 
 # Start the bot
 app.run()
